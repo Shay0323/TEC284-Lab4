@@ -5,12 +5,15 @@
 U8X8_SSD1306_128X64_ALT0_HW_I2C u8x8(/* reset=*/ U8X8_PIN_NONE);
 
 DHT dht(3, DHT11);
+const int BUZZER = 5;
 
 void setup() {
 u8x8.begin();
 u8x8.setFlipMode(1);
 u8x8.clear();
 dht.begin();
+
+pinMode(BUZZER, OUTPUT);
 }
 void loop() {
 u8x8.setFont(u8x8_font_chroma48medium8_r);
@@ -23,4 +26,11 @@ u8x8.println(dht.readTemperature());
 u8x8.println("C");
 float temp = dht.readTemperature();
 float humidity = dht.readHumidity();
+
+if (humidity > 70) {
+  tone(BUZZER, 1000);
+  delay(1000);
+  noTone(BUZZER);
+
+  }
 }
